@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Review Sentiment Analysis</title>
+  
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+        body {
+            background: linear-gradient(to bottom right, #141e30, #243b55); 
+            color: #000;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+        }
+        h1 {
+            color: #fff; 
+        }
+        .sentiment-positive {
+            color: #28a745; 
+        }
+        .sentiment-negative {
+            color: #dc3545; 
+        }
+        .sentiment-neutral {
+            color: #6c757d; 
+        }
+        .review-card {
+            border: 1px solid #ddd;
+            border-radius: .5rem; 
+            padding: 1.5rem; 
+            background-color: #fff; 
+            color: #000; 
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
+            transition: box-shadow 0.3s ease; 
+        }
+        .review-card:hover {
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); 
+        }
+        .container {
+            margin-top: 2rem;
+        }
+        .card-columns {
+            column-count: 2; 
+        }
+        textarea {
+            resize: none; 
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #004085;
+        }
+        .emoji {
+            font-size: 1.5rem; 
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center mb-4">Movie Review Sentiment Analysis</h1>
+
+        <div class="card-columns">
+            <div class="card review-card">
+                <div class="card-body">
+                    <h5 class="card-title"><b>Enter Your Movie Review</b></h5>
+                    <form method="POST" action="/predict">
+                        <div class="form-group">
+                            <textarea name="review" class="form-control" rows="5" placeholder="Enter your movie review here..." required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Analyze Sentiment</button>
+                    </form>
+                </div>
+            </div>
+
+            {% if review %}
+            <div class="card review-card">
+                <div class="card-body">
+                    <h5 class="card-title"><b>Review:</b></h5>
+                    <p class="card-text">{{ review }}</p>
+                    
+                    <h5 class="card-title"><b>Sentiment:</b></h5>
+                    <p class="card-text sentiment {{ sentiment|lower }}">
+                        {{ sentiment }}
+                        {% if sentiment == 'Positive' %}
+                            <span class="emoji">😊</span>
+                        {% elif sentiment == 'Negative' %}
+                            <span class="emoji">😢</span>
+                        {% else %}
+                            <span class="emoji">😐</span>
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
